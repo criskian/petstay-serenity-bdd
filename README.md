@@ -10,6 +10,8 @@ Pruebas end-to-end de **PetStay** (hotel para mascotas, <https://petstay-aphn.on
 | **Aplicación bajo prueba** | PetStay (Render). Todo el estado vive en `localStorage` del navegador |
 | **Escenarios** | 28 escenarios (+ filas de *Esquema del escenario*): positivos y negativos |
 | **Trazabilidad** | Requisito (`@HU-0X`) → Issue de GitHub (`@issue:N`) → Escenario → Reporte |
+| **Tablero (GitHub Project)** | [PetStay - Trazabilidad de pruebas](https://github.com/users/criskian/projects/6): requisitos, casos de prueba y defectos |
+| **Reporte publicado** | <https://criskian.github.io/petstay-serenity-bdd/> |
 | **Pipeline** | GitHub Actions: ejecuta en Chrome headless y publica el reporte en GitHub Pages |
 
 ## Requisitos para ejecutar en local
