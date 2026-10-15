@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.32'
+}
+
+// Una sola versión de Serenity para todos los módulos (evita mezclar 4.2.x con 4.3.x)
+ext {
+    serenityVersion = '4.2.32'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Serenity BDD + patrón Screenplay (la versión de Selenium la aporta Serenity de forma transitiva)
+    testImplementation "net.serenity-bdd:serenity-core:${serenityVersion}"
+    testImplementation "net.serenity-bdd:serenity-cucumber:${serenityVersion}"
+    testImplementation "net.serenity-bdd:serenity-screenplay:${serenityVersion}"
+    testImplementation "net.serenity-bdd:serenity-screenplay-webdriver:${serenityVersion}"
+
+    // Aserciones legibles para las Questions (seeThat)
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+
+    // El Runner usa CucumberWithSerenity (JUnit 4); el vintage engine lo ejecuta sobre la plataforma JUnit 5
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+    // Los reportes de Serenity se generan siempre, incluso si algún escenario falla
+    finalizedBy(aggregate)
+    jvmArgs '-Dfile.encoding=UTF-8'
+
+    // Solo se reenvían las propiedades -D que el proyecto realmente usa
+    // (ej: ./gradlew test -Dcucumber.filter.tags="@smoke" -Dheadless.mode=true)
+    ['headless.mode', 'webdriver.driver', 'environment', 'petstay.base.url',
+     'cucumber.filter.tags', 'serenity.take.screenshots'].each { propiedad ->
+        if (System.getProperty(propiedad) != null) {
+            systemProperty propiedad, System.getProperty(propiedad)
+        }
+    }
+    testLogging {
+        events 'passed', 'failed', 'skipped'
+    }
+}

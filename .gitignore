@@ -1,0 +1,18 @@
+# Gradle
+.gradle/
+build/
+
+# Reportes y evidencias generadas por Serenity
+target/
+serenity-reports/
+test-output/
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+out/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
