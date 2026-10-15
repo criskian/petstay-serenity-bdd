@@ -1,5 +1,6 @@
 package tasks;
 
+import interactions.RememberReservationCode;
 import interactions.SelectPet;
 import interactions.WaitForLoading;
 import models.StayData;
@@ -7,7 +8,6 @@ import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actions.Enter;
-import net.serenitybdd.screenplay.questions.Text;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 import userinterfaces.BookingPage;
 
@@ -15,9 +15,6 @@ import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisi
 
 /** Pasos del formulario "Reservar estadía". Cada paso es pequeño para poder combinarlo en los escenarios. */
 public class BookStay {
-
-    /** Clave con la que el actor recuerda el código de su última reserva confirmada. */
-    public static final String CODIGO_RECORDADO = "codigoReserva";
 
     private BookStay() {
     }
@@ -55,8 +52,7 @@ public class BookStay {
                 Click.on(BookingPage.CONFIRMAR),
                 WaitForLoading.toFinish(),
                 WaitUntil.the(BookingPage.CODIGO_RESERVA, isVisible()).forNoMoreThan(15).seconds(),
-                net.serenitybdd.screenplay.Interaction.where("{0} anota el código de la reserva",
-                        actor -> actor.remember(CODIGO_RECORDADO, Text.of(BookingPage.CODIGO_RESERVA).answeredBy(actor))));
+                RememberReservationCode.shownOnScreen());
     }
 
     /** Flujo completo de reserva sin servicios adicionales; útil como precondición (Dado) de otros escenarios. */

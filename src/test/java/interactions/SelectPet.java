@@ -4,6 +4,8 @@ import net.serenitybdd.annotations.Step;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
+import net.serenitybdd.screenplay.Performable;
+import net.serenitybdd.screenplay.Tasks;
 import org.openqa.selenium.support.ui.Select;
 import userinterfaces.BookingPage;
 
@@ -22,8 +24,8 @@ public class SelectPet implements Interaction {
         this.nombre = nombre;
     }
 
-    public static SelectPet named(String nombre) {
-        return new SelectPet(nombre);
+    public static Performable named(String nombre) {
+        return Tasks.instrumented(SelectPet.class, nombre);
     }
 
     @Override
